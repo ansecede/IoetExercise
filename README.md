@@ -204,9 +204,10 @@ The only downside that I didn't have time to solve is that if the function recie
 
 ### Main function
 
-The main function is quite simple. It will iterate over the same list of dictionaries twice to compare worker and with worker. Here is an example of the list:
+The main function is quite simple. It will iterate over the same list of dictionaries twice to compare a worker with another. Here is an example of the list:
 ```python3
 data_schedules = [worker1, worker2, worker3, worker4, worker5]
+# e.g. --> worker1 = {'name': 'RENE', 'days&hours': ['MO10:00-12:00', 'TU10:00-12:00', 'TH01:00-03:00', 'SA14:00-18:00, 'SU01:00-02:00']}
 ```
 
 The objective is to compare the first worker with the rest, then the second with the rest except the first because that comparison was already executed, then the third with the fourth and the fifth and so on. This is achieved by manipulating the indices so that the second index is always one more than the first, and stopping the loop when the maximum index is reached.
