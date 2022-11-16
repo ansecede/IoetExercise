@@ -1,0 +1,197 @@
+"""
+The company ACME offers their employees the flexibility to work the hours they want. But due to some external circumstances they need to know what employees have been at the office within the same time frame
+
+The goal of this exercise is to output a table containing pairs of employees and how often they have coincided in the office.
+
+Input: the name of an employee and the schedule they worked, indicating the time and hours. This should be a .txt file with at least five sets of data. You can include the data from our examples below:
+
+INPUT
+RENE=MO10:00-12:00,TU10:00-12:00,TH01:00-03:00,SA14:00-18:00,S'01:00'02:00
+ASTRID=MO10:00-12:00,TH12:00-14:00,S'01:00'02:00
+ANDRES=MO10:00-12:00,TH12:00-14:00,S'01:00'02:00
+
+OUTPUT:
+ASTRID-RENE: 2
+ASTRID-ANDRES: 3
+RENE-ANDRES: 2
+
+1. Opennig the .txt --> reading each line --> Strip each element to remove the \n: 
+--> schedules = ['RENE=MO10:00-..'02:00', 'ASTRID=MO10:00-...', 'ANDRES=MO10:00-...']
+
+2. Iterate --> for every string take the information
+for schedule in schedules:
+schedule.split('=') --> worker = 'Rene' & days_n_hours = 'MO10:00-12:00,TU10:00-12:00,TH01:00-03:00,SA14:00-18:00,S'01:00'02:00'
+days_n_hours.split(',') --> days_n_hours_list = ['MO10:00-12:00', 'TU10:00-12:00', 'TH01:00-03:00', 'SA14:00-18:00, 'S'01:00'02:00']
+#worker & days_n_hours should be enough to get the coincidences
+#To link them i should create a dict with both
+info = {'worker': worker, 'schedule': days_n_hours} --> {'worker': 'RENE', 'schedule': ['MO10:00-12:00', 'TU10:00-12:00', 'TH01:00-03:00', 'SA14:00-18:00, 'S'01:00'02:00']}
+append(info) --> data_schedules
+
+3. I should also have some lists to access information, for ex.:
+workers = ["Rene", "Astrid", "ANDRES"]
+days = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
+data_schedules = [dict1, dict2, dict3] --> dictx has to be created with a function
+coincidences = 0
+
+4. Now iterate to compare days and hours.
+
+for i in len(workers):
+    dict_worker1 = dicts[i]
+    dict_worker2 = dicts[i + 1]
+    for day in days:
+        if(day in dict_worker1 and day in dict_worker2):
+            if(compareHours()):
+                coincidences += 1
+
+5. Algorithm checkDayCoincidences(worker1, worker2):
+{'name': 'RENE', 'days&hours': ['MO10:00-12:00', 'TU10:00-12:00', 'TH01:00-03:00', 'SA14:00-18:00', 'S'01:00-'02:00']
+{'name': 'ASTRID', 'days&hours': ['MO10:00-12:00', 'TH12:00-14:00', 'S'01:00'02:00']}
+
+Build the string of names: coincidenceNames = worker1['name'] + '-' + worker2['name'] + ':' --> RENE-ASTRID:
+
+Compare days:
+i = 0, j = 0, i++, j++
+day1 = worker1['days&hours'][i][:2] --> 'MO'
+day2 = worker1['days&hours'][j][:2] --> 'MO'
+dayDistance = DAYS.indexof(day1) - DAYS.indexof(day2)
+if dayDistance == 0:
+    checkHours()
+elif dayDistance > 0:
+    continue
+elif dayDistance < 0:
+    break
+
+6. Algorithm checkHoursCoincidences(hours1, hourDistance1, hours2, hourDistance2):
+{'name': 'RENE', 'days&hours': ['MO10:00-12:00', 'TU10:00-12:00', 'TH01:00-03:00', 'SA14:00-18:00', 'S'01:00-'02:00']
+{'name': 'ASTRID', 'days&hours': ['MO10:00-12:00', 'TH12:00-14:00', 'S'01:00'02:00']}
+
+# It is safe to assume that they will work at least an half-hour.
+# Hours come sorted by hourDistances
+
+
+Case 1.1: They started at the same time --> Easy return True
+hours1 = ['12:00', '14:00'] --> hourDistance1 = 2
+hours2 = ['12:00', '12:30'] --> hourDistance2 = 0
+
+--> hours1[0] == hours2[0] ? True : check other cases
+
+Case 1.2: They end at the same time --> Easy return True
+hours1 = ['13:16', '14:00'] --> hourDistance1 = 0
+hours2 = ['13:15', '14:00'] --> hourDistance2 = 0
+
+--> hours1[1] == hours2[1] ? True : check other cases
+
+# Lets try taking the full range of hours:
+getInterval(hours, hourDistance):
+    start = int(hours[0][:2])
+    end = start + hourDistance
+    interval = HOURS[start:end + 1]
+    if(len(interval) < hourDistance):
+        remaining = hourDistance - len(interval) + 1
+        interval += HOURS[:remaining]
+    return interval --> [10, 11, 12, 13, 14, 15]
+
+# Worth cheking cases like with pytest or printing
+['10:00', '10:15']
+['10:00', '11:00']
+['10:00', '12:00']
+['20:00', '00:00']
+['00:00', '01:00']
+['00:00', '00:30']
+
+
+Case 2: No hour overlap. Works Fine
+hours1 = ['22:00', '02:00'] --> hourDistance1 = 4
+hours2 = ['12:00', '14:00'] --> hourDistance2 = 2
+
+interval = getInterval(hours1, hourDistance1) --> [22, 23, 0, 1, 2]
+strictInterval = interval[1:-1] --> [23, 0, 1]
+
+strictComparisonStart = int(hours2[0][:2]) in strictInterval
+strictComparisonEnd = int(hours2[1][:2]) in strictInterval
+
+comparisonStart = int(hours2[0][:2]) in interval
+comparisonEnd = int(hours2[1][:2]) in interval
+
+if  (strictComparisonStart and strictComparisonEnd):
+    return True
+if(comparisonStart or comparisonEnd):
+    #Keep checking
+else:
+    return False
+
+
+# Overlaps are the biggest problem
+Case 3: Overlap. Both hours2 hours are inside hours1 inteval. Works fine
+hours1 = ['10:00', '15:00'] --> hourDistance1 = 5
+hours2 = ['12:00', '14:00'] --> hourDistance2 = 2
+
+interval = getInterval(hours1, hourDistance1) --> [10, 11, 12, 13, 14, 15]
+strictInterval = interval[1:-1] --> [11, 12, 13, 14]
+
+strictComparisonStart = int(hours2[0][:2]) in strictInterval --> True
+strictComparisonEnd = int(hours2[1][:2]) in strictInterval --> True
+
+comparisonStart = int(hours2[0][:2]) in interval
+comparisonEnd = int(hours2[1][:2]) in interval
+
+if  (strictComparisonStart and strictComparisonEnd):
+    return True
+if(comparisonStart or comparisonEnd):
+    #Keep checking
+else:
+    return False
+
+
+Case 4: Overlap. One or both hours are the same in both lists
+hours1 = ['10:30', '13:30'] --> hourDistance1 = 3
+hours2 = ['10:00', '12:00'] --> hourDistance2 = 2
+
+interval = getInterval(hours1, hourDistance1) --> [10, 11, 12, 13]
+strictInterval = interval[1:-1] --> [11, 12]
+
+strictComparisonStart = int(hours2[0][:2]) in strictInterval --> False
+strictComparisonEnd = int(hours2[1][:2]) in strictInterval --> True
+
+comparisonStart = int(hours2[0][:2]) in interval --> True
+comparisonEnd = int(hours2[1][:2]) in interval --> True
+
+if  (strictComparisonStart and strictComparisonEnd): --> False, does not goes into
+    return True
+if(comparisonStart or comparisonEnd): --> True
+    #Keep checking. New Algorithm: getIntervalMinutes
+    Idea taken from: https://stackoverflow.com/questions/45656834/python-compare-date-strings-without-using-built-in-functions-or-libraries
+else:
+    return False
+
+Case 5: Hour overlap, but no minute overlap.
+hours1 = ['10:30', '13:30'] --> hourDistance1 = 3
+hours2 = ['10:00', '10:15'] --> hourDistance2 = 0
+
+interval = getInterval(hours1, hourDistance1) --> [10, 11, 12, 13]
+strictInterval = interval[1:-1] --> [11, 12]
+
+strictComparisonStart = int(hours2[0][:2]) in strictInterval --> False
+strictComparisonEnd = int(hours2[1][:2]) in strictInterval --> False
+
+comparisonStart = int(hours2[0][:2]) in interval --> True
+comparisonEnd = int(hours2[1][:2]) in interval --> True
+
+if  (strictComparisonStart and strictComparisonEnd): 
+    return True
+if(comparisonStart or comparisonEnd):
+    #Keep checking. New Algorithm: getIntervalMinutes
+    if()
+else:
+    return False
+
+
+Example 2:
+
+INPUT:
+RENE=MO10:15-12:00,TU10:00-12:00,TH13:00-13:15,SA14:00-18:00,S'01:00'02:00
+ASTRID=MO10:00-12:00,TH12:00-14:00,S'01:00'02:00
+
+OUTPUT:
+RENE-ASTRID: 3
+"""
