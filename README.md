@@ -66,7 +66,9 @@ def checkDayCoincidences(worker1, worker2):
 ```
 
 First, the name combination of the workers we are iterating over is created. This will be important because it is the expected output of the program. Then, it iterates over each worker schedule that is inside the list that has 'days&hours' as a key, taking only the first two characters. 
-The day indices are then extracted from the DAYS list and subtracted (first loop day index minus second loop day index) to calculate its distance. With this value we make a nested if that validates if the distance between the days is equal to zero, greater than zero or less than zero. If it is equal to zero, it means that they are the same day, so we proceed to check the hours.Here comes the interesting thing. The order of the days is used to see if it is missing to reach the corresponding day or if it has already passed.
+
+The day indices are then extracted from the DAYS list and subtracted (first loop day index minus second loop day index) to calculate its distance. With this value we make a nested if that validates if the distance between the days is equal to zero, greater than zero or less than zero. If it is equal to zero, it means that they are the same day, so we proceed to check the hours. Here comes the interesting thing. The order of the days is used to see if it is missing to reach the corresponding day or if it has already passed.
+
 For example, if I search for Thursday and the second day (the one of the list that we are iterating in the second loop) is Tuesday, the distance will be greater than zero, so it will go to the next element (day). On the other hand, if it is Friday, the distance will be negative, so the loop stops, since we already know that if I continue searching after Friday I will never find Thursday.
 
 
@@ -116,7 +118,9 @@ def getInterval(hours, hourDistance):
     return interval # --> [22, 23, 0, 1, 2]
 ```
 
-The algorithm takes the start and end of the interval. Since in the HOURS list the numbers correspond exactly to their indices, I take advantage of that to create this list. In the case that the interval includes '00', the list produced will not be complete and will only go up to 23. The conditional resolves this by asking if the length of the interval is less than the distance between them. If this is true, these 2 numbers are subtracted to find out how many numbers are missing from 23. Using this number, the list of hours is delimited and added to the interval, producing the complete list. More information on this function is on the script. Creating this interval list also has the advantage to make the code more readable.
+The algorithm takes the start and end of the interval. Since in the HOURS list the numbers correspond exactly to their indices, I take advantage of that to create this list. In the case that the interval includes '00', the list produced will not be complete and will only go up to 23. The conditional resolves this by asking if the length of the interval is less than the distance between them. If this is true, these 2 numbers are subtracted to find out how many numbers are missing from 23. Using this number, the list of hours is delimited and added to the interval, producing the complete list. 
+
+More information on this function is on the script. Creating this interval list also has the advantage to make the code more readable.
 
 ***Case 2:*** No hour overlap. Works Fine e.g.:
 ```python3
