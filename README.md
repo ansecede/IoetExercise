@@ -204,6 +204,23 @@ The only downside that I didn't have time to solve is that if the function recie
 
 ### Main function
 
+The main function is quite simple. It will iterate over the same list of dictionaries twice to compare worker and with worker. Here is an example of the list:
+```python3
+data_schedules = [worker1, worker2, worker3, worker4, worker5]
+```
+
+The objective is to compare the first worker with the rest, then the second with the rest except the first because that comparison was already executed, then the third with the fourth and the fifth and so on. This is achieved by manipulating the indices so that the second index is always one more than the first, and stopping the loop when the maximum index is reached.
+```python3
+for i in range(len(workers)):
+        j = i + 1
+        while(j < len(workers)):
+            flag, coincidences, names = checkDaysCoincidences(data_schedules[i],data_schedules[j])
+            if(flag):
+                print(f'{names} {coincidences}')
+            j += 1
+```
+
+Finally, 3 values are extracted from the **checkDaysCoincidences** function, which is a flag that indicates whether or not there was a coincidence, the number of coincidences and the names of the workers who had that coincidence in their schedule.
 
 ## How to Run
 You are only require to have installed Python in a current version. My code is a simple script, so all you have to do is, in a terminal window search the directory where the script is and type on command line:
