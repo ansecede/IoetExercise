@@ -1,6 +1,6 @@
 # IoetExercise
 
-This is my solution for the programming exercise given by the company ioet, to apply for the position: Junior Software Developers and Interns.
+This is my solution for the programming exercise given by the company ioet, to apply for the position: Junior Software Developers and Interns. It was written in Python.
 
 ## Solution Overview
 
