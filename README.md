@@ -5,7 +5,7 @@ This is my solution for the programming exercise given by the company ioet, to a
 ## Solution Overview
 
 I divided the big problem into little ones to solve one by one. Roughly as follows:
-1. Opennig the input file and getting the data from it.
+1. Opening the input file and getting the data from it.
 2. Treating the data: Divide each worker's **name** and **schedule**.
 3. Comparing the days.
 4. Comparing the hours.
